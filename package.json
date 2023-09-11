@@ -1,0 +1,19 @@
+{
+  "name": "redi-server",
+  "version": "1.0.0",
+  "description": "The server side of Redi, a web application designed to help students prepare for software engineering interviews",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aus36/Redi-server.git"
+  },
+  "author": "Austin Hale",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aus36/Redi-server/issues"
+  },
+  "homepage": "https://github.com/aus36/Redi-server#readme"
+}
