@@ -20,7 +20,14 @@ const options = {
 // )
 
 // functions for hashing and comparing passwords
+async function hashPassword(password) {
+    const saltRounds = 10;
+    return bcrypt.hash(password, saltRounds);
+}
 
+async function comparePasswords(attempt, hashed) {
+    return bcrypt.compare(attempt, hashed);
+}
 
 // API
 // =====================================
