@@ -10,12 +10,12 @@ const pool = new Pool({
     port: process.env.DBPORT
 })
 
-// QUERIES
+// DB QUERIES
 // ========================================================
 
 // get all users
 const getUsers = (request, response) => {
-    pool.query('SELECT * FROM users ORDER BY username ASC', (error, results) => {
+    pool.query('SELECT * FROM public.users ORDER BY username ASC', (error, results) => {
         if(error){
             throw error
         }
@@ -24,9 +24,9 @@ const getUsers = (request, response) => {
 }
 
 // get user by id
-const getUserById = (request, response) => {
-    const id = parseInt(request.params.id)
-    pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+const getUserByUsername = (request, response) => {
+    const username = parseInt(request.params.username)
+    pool.query('SELECT * FROM public.users WHERE username = $1', [username], (error, results) => {
         if(error){
             throw error
         }
@@ -37,19 +37,18 @@ const getUserById = (request, response) => {
 // create new user
 const createUser = (request, response) => {
     const { username, password } = request.body
-    pool.query('INSERT INTO users (username, password) VALUES ($1, $2)', [username, password], (error, results) => {
+    pool.query('INSERT INTO public.users (username, password) VALUES ($1, $2)', [username, password], (error, results) => {
         if(error){
             throw error
         }
-        response.status(201).send(`User added with username: ${result.insertId}`)
+        response.status(201).send(`User added with username: ${username}`)
     })
 }
 
-// update user
-const updateUser = (request, response) => {
-    const id = parseInt(request.params.id)
+// change password
+const changePassword = (request, response) => {
     const { username, password } = request.body
-    pool.query('UPDATE users SET username = $1, password = $2 WHERE id = $3', [username, password, id], (error, results) => {
+    pool.query('UPDATE public.users SET password = $2, password = $2 WHERE username = $1', [username, password], (error, results) => {
         if(error){
             throw error
         }
@@ -59,20 +58,22 @@ const updateUser = (request, response) => {
 
 // delete user
 const deleteUser = (request, response) => {
-    const id = parseInt(request.params.id)
-    pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
+    const username = request.params.username
+    pool.query('DELETE FROM public.users WHERE username = $1', [username], (error, results) => {
         if(error){
             throw error
         }
-        response.status(200).send(`User deleted with ID: ${id}`)
+        response.status(200).send(`User deleted with username: ${username}`)
     })
 }
+
+// ========================================================
 
 // exports
 module.exports = {
     getUsers,
-    getUserById,
+    getUserByUsername,
     createUser,
-    updateUser,
+    changePassword,
     deleteUser,
   }

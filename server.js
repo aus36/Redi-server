@@ -1,18 +1,34 @@
 require('dotenv').config();
+// const cors = require('cors');
 const bodyParser = require('body-parser');
 var express = require("express");
+const bcrypt = require('bcrypt');
 
 // create express server
 var app = express();
 
-app.use(bodyParser.json())
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-)
+const options = {
+    origin: 'http://localhost:3000',
+}
+// app.use(cors(options));
+
+// app.use(bodyParser.json())
+// app.use(
+//   bodyParser.urlencoded({
+//     extended: true,
+//   })
+// )
+
+// functions for hashing and comparing passwords
+
 
 // API
+// =====================================
+
+// default route
+app.get('/', (request, response) => {
+    response.json({ info: 'Node.js, Express, and Postgres API' })
+  })
 
 const db = require('./queries');
 
@@ -20,16 +36,19 @@ const db = require('./queries');
 app.get('/users', db.getUsers);
 
 // get user by id
-app.get('/users/:id', db.getUserById);
+app.get('/users/:username', db.getUserByUsername);
 
 // create new user
 app.post('/users', db.createUser);
 
-// update user
-app.put('/users/:id', db.updateUser);
+// change password
+app.put('/users/:username', db.changePassword);
 
 // delete user
-app.delete('/users/:id', db.deleteUser);
+app.delete('/users/:username', db.deleteUser);
+
+// ======================================
+
 
 // start server
 app.listen(process.env.PORT, () => {
