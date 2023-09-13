@@ -1,5 +1,5 @@
 require('dotenv').config();
-// const cors = require('cors');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 var express = require("express");
 const bcrypt = require('bcrypt');
@@ -7,17 +7,14 @@ const bcrypt = require('bcrypt');
 // create express server
 var app = express();
 
-const options = {
-    origin: 'http://localhost:3000',
-}
-// app.use(cors(options));
+app.use(cors());
 
-// app.use(bodyParser.json())
-// app.use(
-//   bodyParser.urlencoded({
-//     extended: true,
-//   })
-// )
+app.use(bodyParser.json())
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+)
 
 // functions for hashing and comparing passwords
 async function hashPassword(password) {
